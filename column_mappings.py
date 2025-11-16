@@ -96,7 +96,7 @@ COLUMN_MAPPINGS.append(
     ColumnMapping(
         table="DimProduct",              # as used in FROM/JOIN
         column="ProductName",            # logical name LLM may use
-        replacement="{alias}.ProductDescription",  # REAL column name
+        replacement="{alias}.Description",  # REAL column name
         join_snippet=None
     )
 )
