@@ -17,6 +17,7 @@ from repair_sql import repair_sql
 
 from db import run_query
 from config import STRICT_PREFLIGHT
+from sql_utils import extract_sql  # <-- already imported
 
 # ---------------------------------------------------------
 # FastAPI Startup
@@ -55,7 +56,9 @@ def chat_sql(req: ChatSqlReq):
     # -----------------------------------------------------
     # 1) Generate SQL from natural-language question
     # -----------------------------------------------------
-    sql = generate_sql(question)
+    raw_sql = generate_sql(question)
+    # 🔑 Normalize here so everything downstream sees *clean* SQL
+    sql = extract_sql(raw_sql)
 
     # -----------------------------------------------------
     # 2) Safety: must be SELECT/CTE and contain no DDL/DML
@@ -110,7 +113,9 @@ def chat_sql(req: ChatSqlReq):
     while not ok and attempts < MAX_REPAIR_ATTEMPTS:
         attempts += 1
 
-        repaired = repair_sql(question, sql, msg)
+        repaired_raw = repair_sql(question, sql, msg)
+        # 🔑 Normalize repaired SQL as well
+        repaired = extract_sql(repaired_raw)
 
         if not is_safe_select(repaired):
             break
