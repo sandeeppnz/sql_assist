@@ -107,7 +107,7 @@ Rules:
 - No prose outside JSON. No backticks.
 - Use exact table and column names from the schema above.
 - Do NOT invent tables or columns.
-- Prefer DimCustomer.AccountName for customer name, if relevant.
+- Prefer DimCustomer.FirstName + DimCustomer.LastName for customer name, if relevant.
 - Use DimDate.FullDateAlternateKey where date filtering is required.
 - Add TOP 100 to avoid large scans when it makes sense.
 - Never use INSERT/UPDATE/DELETE/ALTER/DROP/TRUNCATE/EXEC/CREATE/MERGE.
